@@ -10,7 +10,6 @@ interface properties {
 
 export const ApplicationPage: FunctionComponent<properties> = ({ pages }) => {
 
-    // const [menuSet, ] = useState<Page[]>(pages)
     const [currentSubMenuEntries, setCurrentSubMenuEntries] = useState<Page[]>(pages[0].subPages)
     const [currentPage, setCurrentPage] = useState<Page>(pages[0].defaultPage)
 
