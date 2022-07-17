@@ -1,0 +1,17 @@
+div.sub-menu-entry {
+    color: black;
+
+    /*border: 1px solid lightgray;*/
+    display: inline-block;
+    border-radius: 3px 3px 0 0;
+    height: 30px;
+    line-height: 2em;
+    padding: 0 10px;
+    margin: 1px 1px 0 1px;
+    float: left;
+    cursor: pointer;
+}
+
+div.sub-menu-selected-entry {
+    background-image: linear-gradient(#f8f8f8, #ffffff);
+}

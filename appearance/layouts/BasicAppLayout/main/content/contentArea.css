@@ -1,0 +1,5 @@
+div.content-area {
+    background-image: linear-gradient(#ffffff, #f1f1f1);
+    padding: 0 0 0 5px;
+    min-height: 100vh;
+}

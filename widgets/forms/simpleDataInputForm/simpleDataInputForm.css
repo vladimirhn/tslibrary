@@ -1,0 +1,15 @@
+
+.inputsContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.inputLine {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.question {
+    width: 200px;
+}
