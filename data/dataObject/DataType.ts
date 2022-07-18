@@ -7,4 +7,5 @@ export default class DataType {
     static FOREIGN = "foreign";
     static MAP = "map";
     static OBJECT = "object";
+    static ARRAY = "array";
 }

@@ -4,7 +4,7 @@ import React from "react";
 
 export default class Data<T> {
 
-    public updater:React.Dispatch<React.SetStateAction<any>> | undefined;
+    public update:React.Dispatch<React.SetStateAction<any>> | undefined;
     static pure():Data<any> {
         return  new Data({}, undefined);
     }
@@ -38,14 +38,14 @@ export default class Data<T> {
 
     public setValue = (fieldName:string, value:string|undefined):void => {
         this._obj[fieldName] = value;
-        if (this.updater) {
+        if (this.update) {
             const duplicate = Data.pure();
             Object.assign(duplicate, this);
-            this.updater(duplicate);
+            this.update(duplicate);
         }
     }
 
-    public getValueByField = (field: ObjectFieldDescription|undefined):string|undefined => {
+    public getValueByField = (field: ObjectFieldDescription|undefined):any|undefined => {
 
         let result;
 
@@ -64,7 +64,7 @@ export default class Data<T> {
         return this.getValueByField(field) || "";
     }
 
-    public setValueByField = (field:ObjectFieldDescription, value:string|undefined):void => {
+    public setValueByField = (field:ObjectFieldDescription, value:any|undefined):void => {
         let fieldName = field.field;
         this.setValue(fieldName, value);
     }
