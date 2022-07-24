@@ -35,6 +35,13 @@ export const ComboBoxFromRepository: FunctionComponent<properties> = ({ label, r
     }
 
     const processChoice = (e: React.ChangeEvent<HTMLSelectElement>) => {
+
+        if(!e.target.value) {
+            repository.dataSet.dropSelection();
+            consumeChoice(undefined);
+            return;
+        }
+
         const selectedId:string = e.target.value;
         const selectedEntry:DataObject<any> | undefined = repository.dataSet.getById(selectedId);
 

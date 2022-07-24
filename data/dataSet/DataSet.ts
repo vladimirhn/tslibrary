@@ -64,6 +64,16 @@ export default class DataSet<T> {
         this._rerender();
     }
 
+    public dropOneSelection = () => {
+        for (let t of this._entriesArray) {
+            if (t.isSelected) {
+                t.isSelected = false;
+                break;
+            }
+        }
+        this._rerender();
+    }
+
     public toggleMultiSelection = (entry:DataObject<T>) => {
         for (let t of this._entriesArray) {
             if (t === entry) {
@@ -92,7 +102,7 @@ export default class DataSet<T> {
         return this.oneSelectedEntry !== null;
     }
 
-    dropSelection = ():void => {
+    public dropSelection = ():void => {
         for (let t of this._entriesArray) {
             t.isSelected = false;
         }

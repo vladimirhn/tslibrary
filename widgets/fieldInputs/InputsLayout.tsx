@@ -7,7 +7,7 @@ interface properties {
 
 export const InputLayout: FunctionComponent<properties> = ({widget, label}) => {
 
-    return <div className="wrapper">
+    return <div>
         <div className="inline-200-px">{label}</div>
         <div className="inline-200-px"> {widget}</div>
     </div>

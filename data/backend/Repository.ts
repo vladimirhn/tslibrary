@@ -9,6 +9,7 @@ import {DataState} from "../dataSet/DataState";
 import DataObject from "../dataObject/DataObject";
 import Domain from "../../../application/domain/Domain";
 import Class from "../../reflection/Class";
+import Data from "../dataObject/Data";
 
 export default class Repository<T> {
 
@@ -81,6 +82,16 @@ export default class Repository<T> {
             });
     }
 
+    initialFetchFiltered = (example:DataObject<T>, repoSetter:Consumer<any>) => {
+        this._repoSetter = repoSetter;
+        this.fetchFiltered(example);
+    }
+
+    simplyFetchFiltered = (example:DataObject<T>, setFetched:Consumer<any>) => {
+        Fetcher.postForJson(example.data?.getObject(), this._path + "/get_filtered")
+            .then(setFetched);
+    }
+
     fetchFiltered = (example:DataObject<T>) => {
 
         if (example.data?.isDataFieldsEmpty()) {
@@ -101,7 +112,16 @@ export default class Repository<T> {
     }
 
     insert(example:DataObject<T>) {
-        Fetcher.postForText(example.data?.getObject(), this._path + "/insert")
+        if (example.data) {
+            this.insertData(example.data);
+        } else {
+            console.log("Trying to insert DataObject but it's data field is empty.")
+        }
+    }
+
+    insertData(example:Data<T>) {
+
+        Fetcher.postForText(example.getObject(), this._path + "/insert")
             .then(result => {
 
                 alert("Сохранено");
@@ -140,6 +160,8 @@ export default class Repository<T> {
             console.log("Попытка удалить запись, но запись либо не выбрана, либо не содержить поля id.")
         }
     }
+
+
 
     update(data:any, callback: Consumer<any>) {
 
