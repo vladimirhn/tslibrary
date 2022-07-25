@@ -64,6 +64,14 @@ export default class DataSet<T> {
         this._rerender();
     }
 
+    public setSelectedById = (id: string) => {
+        for (let entry of this._entriesArray) {
+            if (entry.data?.id === id) {
+                entry.isSelected = true;
+            }
+        }
+    }
+
     public dropOneSelection = () => {
         for (let t of this._entriesArray) {
             if (t.isSelected) {

@@ -7,6 +7,7 @@ import TableDescription from "../schema/TableDescription";
 import Class from "../../reflection/Class";
 import Domain from "../../../application/domain/Domain";
 import DataSchema from "../schema/DataSchema";
+import React from "react";
 
 export default class DataObject<T> {
 

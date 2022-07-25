@@ -45,6 +45,12 @@ export default class Data<T> {
         }
     }
 
+    public toUndefined = () => {
+        if (this.update) {
+            this.update(undefined);
+        }
+    }
+
     public getValueByField = (field: ObjectFieldDescription|undefined):any|undefined => {
 
         let result;

@@ -161,20 +161,24 @@ export default class Repository<T> {
         }
     }
 
+    update(example:DataObject<T>) {
+        if (example.data) {
+            this.updateData(example.data);
+        } else {
+            console.log("Trying to update DataObject but it's data field is empty.")
+        }
+    }
 
+    updateData(example:Data<T>) {
 
-    update(data:any, callback: Consumer<any>) {
+        console.log("Обновляется: " + JSON.stringify(example));
 
-        console.log("Обновляется: " + JSON.stringify(data));
-
-        Fetcher.postForText(data,this._path + "/update")
+        Fetcher.postForText(example.getObject(),this._path + "/update")
             .then(result => {
 
                 alert("Обновлено");
 
-                if (callback) {
-                    callback(result);
-                }
+                this.fetchAll();
             });
     }
 }
