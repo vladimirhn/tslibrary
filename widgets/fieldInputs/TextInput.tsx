@@ -2,6 +2,7 @@ import React, {FunctionComponent} from "react";
 import Data from "../../data/dataObject/Data";
 import ObjectFieldDescription from "../../data/dataObject/objectFieldsDescriptions/ObjectFieldDescription";
 import {InputLayout} from "./InputsLayout";
+import {InlineLayout} from "../layouts/InlineLayout";
 
 interface properties {
     data:Data<any>;
@@ -12,11 +13,12 @@ interface properties {
 export const TextInput: FunctionComponent<properties> = ({data, field, label}) => {
 
     label = label? label : field.label;
+    const labelWidget = <>{label}</>
 
     let widget:JSX.Element = <input
         value={data.getValueByField(field) || ""}
         onChange={(e) => {data.setValueByField(field, e.target.value)}}
     />
 
-    return <InputLayout label={label} widget={widget}/>
+    return <InlineLayout widgets={[labelWidget, widget]} defaultWidth={200}/>
 }
