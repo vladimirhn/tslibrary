@@ -120,8 +120,11 @@ export default class Repository<T> {
     }
 
     insertData(example:Data<T>) {
+        this.insertObject(example.getObject());
+    }
 
-        Fetcher.postForText(example.getObject(), this._path + "/insert")
+    insertObject(obj:{}) {
+        Fetcher.postForText(obj, this._path + "/insert")
             .then(result => {
 
                 alert("Сохранено");

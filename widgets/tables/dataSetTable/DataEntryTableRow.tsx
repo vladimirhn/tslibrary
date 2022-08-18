@@ -2,7 +2,8 @@ import React, {FunctionComponent} from 'react';
 import DataType from "../../../data/dataObject/DataType";
 import Dates from "../../../tools/Dates";
 import DataObject from "../../../data/dataObject/DataObject";
-import Runnable from "../../../functions/interfaces/Runnable";
+import {TableCell} from "../abstractTable/TableCell";
+import {TableRow} from "../abstractTable/TableRow";
 
 interface properties {
     entry:DataObject<any>;
@@ -10,7 +11,7 @@ interface properties {
 
 export const DataEntryTableRow: FunctionComponent<properties> = ({ entry }) => {
 
-    const fields = [];
+    const cells:JSX.Element[] = [];
     let i = 0;
 
     entry.fieldsDescriptions?.forEach(fieldDescription => {
@@ -55,26 +56,17 @@ export const DataEntryTableRow: FunctionComponent<properties> = ({ entry }) => {
                 value = entry.data?.getValueByField(fieldDescription) || "";
             }
 
-            fields.push(<td style={style} key={++i}>{value}</td>)
+            cells.push(<TableCell style={style} key={++i} value={value}/>)
 
         } else {
             if (fieldDescription.foreignModel) {
                 const foreignInstance:DataObject<any> = new fieldDescription.foreignModel(entry.data?.getValueByField(fieldDescription));
-                fields.push(<td key={++i}>{foreignInstance.data?.getValueByField(foreignInstance.mainFieldDescription)}</td>)
+                cells.push(<TableCell key={++i} value={foreignInstance.data?.getValueByField(foreignInstance.mainFieldDescription)}/>)
             }
         }
 
 
     });
 
-    fields.push(<td key="1000"/>);
-
-    return (
-        <tr className={entry.isSelected ? "selected" : "unselected"}
-            onClick={entry.processClick}
-        >
-            {fields}
-        </tr>
-    )
-
+    return <TableRow cells={cells} lastCell={true} isSelected={entry.isSelected} onClick={entry.processClick}/>
 }

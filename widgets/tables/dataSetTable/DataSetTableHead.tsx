@@ -1,5 +1,7 @@
 import React, {FunctionComponent} from 'react';
 import DataSet from "../../../data/dataSet/DataSet";
+import {TableHeaderCell} from "../abstractTable/TableHeaderCell";
+import {TableHeaderRow} from "../abstractTable/TableHeaderRow";
 
 interface properties {
     dataSet:DataSet<any> | undefined
@@ -9,25 +11,19 @@ export const DataSetTableHead: FunctionComponent<properties> = ({ dataSet }) => 
 
     if (!dataSet || dataSet.size === 0) return null;
 
-    const headers = [];
+    const headerCells:JSX.Element[] = [];
     let i = 0;
     dataSet.objectDescription?.fieldsDescriptions.forEach((fieldDescription) => {
 
         if (fieldDescription.isVisible) {
-            headers.push(<th key={++i}>{fieldDescription.label}</th>)
+            headerCells.push(<TableHeaderCell key={++i} value={fieldDescription.label} />)
 
         } else {
             if (fieldDescription.foreignModel) {
-                headers.push(<th key={++i}>{fieldDescription.label}</th>)
+                headerCells.push(<TableHeaderCell key={++i} value={fieldDescription.label} />)
             }
         }
     });
 
-    headers.push(<td key="1000"/>);
-
-    return <thead>
-    <tr>
-        {headers}
-    </tr>
-    </thead>
+    return <TableHeaderRow cells={headerCells} lastCell={true}/>
 }

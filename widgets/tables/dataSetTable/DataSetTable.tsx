@@ -6,6 +6,7 @@ import TableConfig from "./TableConfig";
 import Repository from "../../../data/backend/Repository";
 import {RepositoryState} from "../../../data/backend/RepositoryState";
 import {DataSetTableManagementPanel} from "./managementPanel/DataSetTableManagementPanel";
+import {TableWithPanel} from "../abstractTable/TableWithPanel";
 
 interface properties {
     repository:Repository<any>;
@@ -25,23 +26,23 @@ export const DataSetTable: FunctionComponent<properties> = ({ repository, config
     }
 
 
-    let rows;
+    let rows:(JSX.Element | null)[] = [];
 
     if (repository.state !== RepositoryState.DATA_FETCHED) {
 
-        rows = <tr>
+        rows.push(<tr key={-1}>
             <td style={{textAlign: "center"}}>
                 Загрузка данных
             </td>
-        </tr>
+        </tr>)
 
     }
     else if (repository.dataSet.size === 0) {
-        rows = <tr>
+        rows.push(<tr  key={-2}>
             <td style={{textAlign: "center"}}>
                 Таблица пуста
             </td>
-        </tr>
+        </tr>)
 
     }
     else {
@@ -64,24 +65,18 @@ export const DataSetTable: FunctionComponent<properties> = ({ repository, config
                     entry={entry}
                 />
             } else return null;
-        });
+        }).filter((e:JSX.Element | null) => e !== null);
+
+
     }
 
-    return <div>
+    const managementPanel = <DataSetTableManagementPanel
+        repository={repository}
+        config={config}
+        flipLogic={flipLogic}
+    />;
 
-        <DataSetTableManagementPanel
-            repository={repository}
-            config={config}
-            flipLogic={flipLogic}
-        />
+    const header = <DataSetTableHead dataSet={repository.dataSet}/>;
 
-        <table className="last-cell-table">
-            <DataSetTableHead dataSet={repository.dataSet}/>
-
-            <tbody>
-            {rows}
-            </tbody>
-
-        </table>
-    </div>
+    return <TableWithPanel lastCell={true} topPanel={managementPanel} header={header} rows={rows}/>
 }

@@ -1,4 +1,4 @@
-import ObjectFieldDescription from "./objectFieldsDescriptions/ObjectFieldDescription";
+import ObjectFieldDescription from "../objectFieldsDescriptions/ObjectFieldDescription";
 
 export function setToObject (obj:any, field:ObjectFieldDescription, value:any):any {
     obj[field.field] = value;
@@ -6,5 +6,6 @@ export function setToObject (obj:any, field:ObjectFieldDescription, value:any):a
 }
 
 export function getFromObject(obj:any, field:ObjectFieldDescription):any {
+    if (!obj) return undefined;
     return obj[field.field];
 }
