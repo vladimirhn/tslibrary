@@ -9,6 +9,10 @@ export default class Data<T> {
         return  new Data({}, undefined);
     }
 
+    static from(obj:{}):Data<any> {
+        return  new Data(obj, undefined);
+    }
+
     private _obj:any;
 
     constructor(obj: any, objectDescription:ObjectDescription<T> | undefined) {

@@ -175,8 +175,11 @@ export default class Repository<T> {
     updateData(example:Data<T>) {
 
         console.log("Обновляется: " + JSON.stringify(example));
+        this.updateObject(example.getObject());
+    }
 
-        Fetcher.postForText(example.getObject(),this._path + "/update")
+    updateObject(obj:{}) {
+        Fetcher.postForText(obj, this._path + "/update")
             .then(result => {
 
                 alert("Обновлено");
