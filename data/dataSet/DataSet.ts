@@ -1,4 +1,3 @@
-import Arrays from "../../tools/Arrays";
 import ObjectDescription from "../backend/ObjectDescription";
 import DataObject from "../dataObject/DataObject";
 import DomainClass from "../../reflection/DomainClass";
