@@ -1,4 +1,4 @@
-import React, {FunctionComponent, useEffect, useReducer, useState} from "react";
+import React, {FunctionComponent, useEffect, useState} from "react";
 import Popup from "../../popup/Popup";
 import {ChooseFromTableResultWidget} from "./ChooseFromTableResultWidget";
 import DropValueOptionWidget from "./DropValueOptionWidget";
@@ -6,26 +6,26 @@ import Repository from "../../../data/backend/Repository";
 import TableConfig from "../../tables/dataSetTable/TableConfig";
 import DataObject from "../../../data/dataObject/DataObject";
 import ObjectFieldDescription from "../../../data/dataObject/objectFieldsDescriptions/ObjectFieldDescription";
-import Domain from "../../../../application/domain/Domain";
 import {DataSetTable} from "../../tables/dataSetTable/DataSetTable";
+import DataObjectState from "../../../data/dataObject/DataObjectState";
 
 interface properties {
-    // repository:Repository<any>;
     config:TableConfig;
-    exampleObject:DataObject<any>;
+    exampleObjectState:DataObjectState;
     fieldDescription:ObjectFieldDescription;
 }
 
-export const ChooseFromTablePopupWidget: FunctionComponent<properties> = ({ /*repository,*/ config, exampleObject, fieldDescription }) => {
+export const ChooseFromTablePopupWidget: FunctionComponent<properties> = ({ config, exampleObjectState, fieldDescription }) => {
 
     const [repository, setRepository] = useState<Repository<any>>(Repository.empty(fieldDescription.foreignModel));
 
     useEffect(() => {
         repository.initialFetchAll(setRepository);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
 
-    let id:string = exampleObject.data?.getDefinedValueByField(fieldDescription) || "";
+    let id:string = exampleObjectState.getValue(fieldDescription) || "";
     let name = repository.dataSet.findMainFieldDataById(id);
 
     const [isOpen, setIsOpen] = useState(false);
@@ -36,12 +36,12 @@ export const ChooseFromTablePopupWidget: FunctionComponent<properties> = ({ /*re
 
     const applySelection = (entry:DataObject<any>) => {
         setIsOpen(false);
-        exampleObject.data?.setValueByField(fieldDescription, entry.data?.id);
+        exampleObjectState.setValue(fieldDescription, entry.data?.id);
     }
 
     const dropSelection = () => {
         setIsOpen(false);
-        exampleObject.data?.setValueByField(fieldDescription, undefined);
+        exampleObjectState.setValue(fieldDescription, undefined);
     }
 
     return <>
@@ -62,7 +62,8 @@ export const ChooseFromTablePopupWidget: FunctionComponent<properties> = ({ /*re
                 />}
                 <DataSetTable
                     repository={repository}
-                    config={new TableConfig().inlineFilters()}
+                    config={new TableConfig().inlineFilters().noDelete()}
+                    onChoice={applySelection}
                 />
             </>}
             handleClose={togglePopup}

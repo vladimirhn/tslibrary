@@ -1,11 +1,11 @@
 export default class DataType {
 
+    static FOREIGN_ID = "foreign_id";
     static STRING = "string";
     static DATE = "date";
     static NUMERIC = "numeric";
     static BOOLEAN = "boolean";
-    static FOREIGN = "foreign";
     static MAP = "map";
-    static OBJECT = "object";
+    static FOREIGN_OBJECT = "foreign_object";
     static ARRAY = "array";
 }

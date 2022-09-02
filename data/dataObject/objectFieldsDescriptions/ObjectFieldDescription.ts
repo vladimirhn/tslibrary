@@ -1,5 +1,4 @@
 import DataType from "../DataType";
-import DataObject from "../DataObject";
 import Class from "../../../reflection/Class";
 import DomainClass from "../../../reflection/DomainClass";
 
@@ -14,7 +13,7 @@ export default class ObjectFieldDescription {
     }
 
     field:string = "";       //Имя поля объекта. Инициализируется автоматически в DataObject.
-    private readonly _label:string;           //Заголовок столбца таблицы для данного поля
+    private _label:string;           //Заголовок столбца таблицы для данного поля
     private _isMain = false;         //Можно ли свести данные всего объекта, к данным этого поля. Поле-заголовок.
     type = DataType.STRING;  //Тип данных поля, если тип стандартный. Если кастомный, то _customType
     private _isVisible = true;         //Должно ли поле отображаться в таблицах
@@ -30,6 +29,11 @@ export default class ObjectFieldDescription {
 
     constructor(label:string) {
         this._label = label || "";
+    }
+
+    public withLabel(label:string):ObjectFieldDescription {
+        this._label = label;
+        return this;
     }
 
     public withDefault(aDefault:string):ObjectFieldDescription {
@@ -64,6 +68,11 @@ export default class ObjectFieldDescription {
 
     public setFilter(filter:boolean) {
         this._filter = filter;
+        return this;
+    }
+
+    public setMandatory(mandatory:boolean) {
+        this._isMandatory = mandatory;
         return this;
     }
 

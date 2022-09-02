@@ -5,16 +5,17 @@ import ObjectFieldDescription from "../../../../data/dataObject/objectFieldsDesc
 import DataObject from "../../../../data/dataObject/DataObject";
 import Runnable from "../../../../functions/interfaces/Runnable";
 import Symbols from "../../../../misc/Symbols";
+import DataObjectState from "../../../../data/dataObject/DataObjectState";
 
 interface properties {
-    exampleObject:DataObject<any>;
+    exampleObjectState:DataObjectState;
     fieldDescription:ObjectFieldDescription;
     noEmpty:boolean;
     isInline:boolean;
     onChoice:Runnable;
 }
 
-export const ComboBoxFromMapObject: FunctionComponent<properties> = ({exampleObject,
+export const ComboBoxFromMapObject: FunctionComponent<properties> = ({exampleObjectState,
                                                                          fieldDescription,
                                                                          noEmpty ,
                                                                          isInline,
@@ -39,14 +40,14 @@ export const ComboBoxFromMapObject: FunctionComponent<properties> = ({exampleObj
         )
     }
 
-    let id = exampleObject.data?.getDefinedValueByField(fieldDescription);
+    let id = exampleObjectState.getValue(fieldDescription) || "";
 
     return <div className={isInline ? "inline" : ""}>
         <div className={isInline ? "inline" : "inline-200-px"}>{fieldDescription.label}{Symbols.SPACE}️</div>
         <div className={isInline ? "inline" : "inline-200-px"}>
 
             <select
-                onChange={(e) => {exampleObject.data?.setValueByField(fieldDescription, e.target.value); onChoice();}}
+                onChange={(e) => {exampleObjectState.setValue(fieldDescription, e.target.value); onChoice();}}
                 value={id}
                 style={{minWidth:'200px'}}>
                 {options}

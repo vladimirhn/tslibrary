@@ -32,7 +32,7 @@ export const DataSetTableManagementPanel: FunctionComponent<properties> = ({ rep
         />
         : null;
 
-    const dropFiltersButton = (repository.dataState === DataState.FILTERED && !config.inlineFilters) ?
+    const dropFiltersButton = (repository.dataState === DataState.FILTERED && !config.isInlineFilters) ?
         <button onClick={() => {repository.fetchAll()}}
         >Сбросить фильтры</button>
         : null;

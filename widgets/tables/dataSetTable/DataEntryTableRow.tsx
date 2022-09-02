@@ -4,12 +4,14 @@ import Dates from "../../../tools/Dates";
 import DataObject from "../../../data/dataObject/DataObject";
 import {TableCell} from "../abstractTable/TableCell";
 import {TableRow} from "../abstractTable/TableRow";
+import Consumer from "../../../functions/interfaces/Consumer";
 
 interface properties {
     entry:DataObject<any>;
+    onChoice?:Consumer<any>
 }
 
-export const DataEntryTableRow: FunctionComponent<properties> = ({ entry }) => {
+export const DataEntryTableRow: FunctionComponent<properties> = ({ entry, onChoice }) => {
 
     const cells:JSX.Element[] = [];
     let i = 0;
@@ -40,13 +42,12 @@ export const DataEntryTableRow: FunctionComponent<properties> = ({ entry }) => {
                 }
             }
 
-            else if (fieldDescription.type === DataType.OBJECT) {
+            else if (fieldDescription.type === DataType.FOREIGN_OBJECT) {
 
-                let foreignObject:string | undefined = entry.data?.getValueByField(fieldDescription);
+                let foreignObject:{} = entry.data?.getValueByField(fieldDescription);
 
                 if (foreignObject && fieldDescription.foreignModel) {
-                    // const dataObjectClass = (fieldDescription as unknown as Class<any>).foreignModel;
-                    const foreignInstance:DataObject<any> = new fieldDescription.foreignModel(foreignObject);
+                    const foreignInstance:DataObject<any> = DataObject.fromObject(foreignObject, fieldDescription.foreignModel);
                     const mainFieldDescription = foreignInstance.mainFieldDescription;
                     value = foreignInstance.data?.getValueByField(mainFieldDescription) || "";
                 }
@@ -59,14 +60,14 @@ export const DataEntryTableRow: FunctionComponent<properties> = ({ entry }) => {
             cells.push(<TableCell style={style} key={++i} value={value}/>)
 
         } else {
-            if (fieldDescription.foreignModel) {
-                const foreignInstance:DataObject<any> = new fieldDescription.foreignModel(entry.data?.getValueByField(fieldDescription));
-                cells.push(<TableCell key={++i} value={foreignInstance.data?.getValueByField(foreignInstance.mainFieldDescription)}/>)
-            }
+            // if (fieldDescription.foreignModel) {
+            //     const foreignInstance:DataObject<any> = new fieldDescription.foreignModel(entry.data?.getValueByField(fieldDescription));
+            //     cells.push(<TableCell key={++i} value={foreignInstance.data?.getValueByField(foreignInstance.mainFieldDescription)}/>)
+            // }
         }
 
 
     });
 
-    return <TableRow cells={cells} lastCell={true} isSelected={entry.isSelected} onClick={entry.processClick}/>
+    return <TableRow cells={cells} lastCell={true} isSelected={entry.isSelected} onClick={entry.processClick} entry={entry} onChoice={onChoice}/>
 }

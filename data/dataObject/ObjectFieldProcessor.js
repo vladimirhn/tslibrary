@@ -8,9 +8,6 @@ export default class ObjectFieldProcessor {
     }
 
     setValue(field, value) {
-        if (!field instanceof ObjectFieldDescription) {
-            throw Error("Field must be an instance of ObjectFieldDescription")
-        }
 
         const dataObject = this._model.dataObject;
         const updateFunct = this._updateFunct;

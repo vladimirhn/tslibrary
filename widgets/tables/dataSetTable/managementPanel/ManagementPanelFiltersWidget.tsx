@@ -8,6 +8,7 @@ import Repository from "../../../../data/backend/Repository";
 import Consumer from "../../../../functions/interfaces/Consumer";
 import DataObject from "../../../../data/dataObject/DataObject";
 import TableConfig from "../TableConfig";
+import DataObjectState from "../../../../data/dataObject/DataObjectState";
 
 interface properties {
     repository:Repository<any>;
@@ -16,12 +17,12 @@ interface properties {
 
 export const ManagementPanelFiltersWidget: FunctionComponent<properties> = ({ repository, toggleVisibilityFunct }) => {
 
-    const [exampleObject, ] = useState<DataObject<any>>(new DataObject());
+    const exampleObjectState:DataObjectState = new DataObjectState(useState<DataObject<any>>(DataObject.empty));
 
     const applyFilterButton = <Button
-        funct={() => {repository.fetchFiltered(exampleObject); toggleVisibilityFunct()}}
+        funct={() => {repository.fetchFiltered(exampleObjectState.getDataObject()); toggleVisibilityFunct()}}
         label={"Применить фильтры"}
-        enabled={!exampleObject.data?.isDataFieldsEmpty()}
+        enabled={!exampleObjectState.getDataObject().data?.isDataFieldsEmpty()}
     />
 
     const filterWidgets = repository.objectDescription?.filterFieldsDescriptions.map((filterFieldDescription, index) => {
@@ -30,32 +31,31 @@ export const ManagementPanelFiltersWidget: FunctionComponent<properties> = ({ re
 
             return <DateFilterInput
                 key={index}
-                exampleObject={exampleObject}
+                exampleObjectState={exampleObjectState}
                 fieldDescription={filterFieldDescription}
             />
         }
         else if (filterFieldDescription.type === DataType.BOOLEAN) {
             return null;
         }
-        else if (filterFieldDescription.type === DataType.FOREIGN) {
+        else if (filterFieldDescription.type === DataType.FOREIGN_ID) {
 
             return <ChooseFromTablePopupWidget
                 key={index}
                 config={new TableConfig().noDelete()}
-                exampleObject={exampleObject}
+                exampleObjectState={exampleObjectState}
                 fieldDescription={filterFieldDescription}
-                // repository={repository}
             />;
         }
         else if (filterFieldDescription.type === DataType.MAP) {
 
             return <ComboBoxFromMapObject
                 key={index}
-                exampleObject={exampleObject}
+                exampleObjectState={exampleObjectState}
                 fieldDescription={filterFieldDescription}
                 noEmpty={true}
                 isInline={false}
-                onChoice={() => repository.fetchFiltered(exampleObject)}
+                onChoice={() => repository.fetchFiltered(exampleObjectState.getDataObject())}
             />;
         }
 

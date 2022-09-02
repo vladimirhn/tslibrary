@@ -7,13 +7,15 @@ import Repository from "../../../data/backend/Repository";
 import {RepositoryState} from "../../../data/backend/RepositoryState";
 import {DataSetTableManagementPanel} from "./managementPanel/DataSetTableManagementPanel";
 import {TableWithPanel} from "../abstractTable/TableWithPanel";
+import Consumer from "../../../functions/interfaces/Consumer";
 
 interface properties {
     repository:Repository<any>;
     config:TableConfig;
+    onChoice?:Consumer<any>
 }
 
-export const DataSetTable: FunctionComponent<properties> = ({ repository, config }) => {
+export const DataSetTable: FunctionComponent<properties> = ({ repository, config , onChoice}) => {
 
     const linesPerPage = 20;
     const [pageNum, setPageNum] = useState(0);
@@ -63,6 +65,7 @@ export const DataSetTable: FunctionComponent<properties> = ({ repository, config
                 return <DataEntryTableRow
                     key={index}
                     entry={entry}
+                    onChoice={onChoice}
                 />
             } else return null;
         }).filter((e:JSX.Element | null) => e !== null);

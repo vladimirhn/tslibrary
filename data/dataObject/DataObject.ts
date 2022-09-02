@@ -8,11 +8,18 @@ import Class from "../../reflection/Class";
 import Domain from "../../../application/domain/Domain";
 import DataSchema from "../schema/DataSchema";
 import React from "react";
+import DomainClass from "../../reflection/DomainClass";
 
 export default class DataObject<T> {
 
     public static empty(): DataObject<any> {
         return new DataObject().setUp({}, DataSet.empty());
+    }
+
+    public static fromObject(obj:{}, klass:Class<any>): DataObject<any> {
+        const dataObject:DataObject<any> = new DataObject().setUp(obj, DataSet.empty());
+        dataObject.objectDescription = Domain.get(klass).objectDescription();
+        return dataObject;
     }
 
     public static withField(field:ObjectFieldDescription, value:any): DataObject<any> {
@@ -48,6 +55,10 @@ export default class DataObject<T> {
         return this;
     }
 
+    public clone = ():DataObject<any> => {
+        return new DataObject<T>(undefined).setUp(this.data?.getObject(), this.dataSet || DataSet.empty());
+    }
+
     public reduceTo(type:Class<T>):DataObject<T> {
         this.objectDescription = Domain.get(type).objectDescription();
         this._tableDescription = DataSchema.table(Domain.get(type).path);
@@ -74,7 +85,7 @@ export default class DataObject<T> {
         if (this.objectDescription?.mainFieldDescription) {
             const mainFieldDesc = this.objectDescription.mainFieldDescription;
 
-            if (mainFieldDesc.type === DataType.OBJECT) {
+            if (mainFieldDesc.type === DataType.FOREIGN_OBJECT) {
                 let foreignObject = this.data?.getValueByField(mainFieldDesc);
 
                 if (foreignObject && mainFieldDesc.foreignModel) {

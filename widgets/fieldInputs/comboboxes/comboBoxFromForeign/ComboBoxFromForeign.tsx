@@ -1,22 +1,20 @@
-import React, {FunctionComponent, useEffect, useReducer, useState} from "react";
-import {ComboBoxEntryOption} from "./ComboBoxEntryOption";
-import {ComboBoxEmptyOption} from "../ComboBoxEmptyOption";
-import Symbols from "../../../../misc/Symbols";
+import React, {FunctionComponent, useEffect, useState} from "react";
 import DataObject from "../../../../data/dataObject/DataObject";
 import ObjectFieldDescription from "../../../../data/dataObject/objectFieldsDescriptions/ObjectFieldDescription";
 import Runnable from "../../../../functions/interfaces/Runnable";
 import Repository from "../../../../data/backend/Repository";
 import Class from "../../../../reflection/Class";
 import {ComboBoxFromRepository} from "../ComboBoxFromRepository";
+import DataObjectState from "../../../../data/dataObject/DataObjectState";
 
 interface properties {
-    exampleObject:DataObject<any>;
+    exampleObjectState:DataObjectState;
     fieldDescription:ObjectFieldDescription;
     isInline:boolean;
     onChoice:Runnable;
 }
 
-export const ComboBoxFromForeign: FunctionComponent<properties> = ({ exampleObject, fieldDescription, isInline, onChoice }) => {
+export const ComboBoxFromForeign: FunctionComponent<properties> = ({ exampleObjectState, fieldDescription, isInline, onChoice }) => {
 
     const dataObjectClass = (fieldDescription as unknown as Class<any>).foreignModel;
 
@@ -24,11 +22,12 @@ export const ComboBoxFromForeign: FunctionComponent<properties> = ({ exampleObje
 
     useEffect(() => {
         foreignRepository.initialFetchAll(setRepository);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
 
     const processChoice = (selectedEntry:DataObject<any> | undefined) => {
-        exampleObject.data?.setValueByField(fieldDescription, selectedEntry?.data?.id);
+        exampleObjectState.setValue(fieldDescription, selectedEntry?.data?.id);
         if (onChoice) onChoice();
     }
 

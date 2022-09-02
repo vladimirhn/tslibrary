@@ -19,9 +19,9 @@ export const DataSetTableHead: FunctionComponent<properties> = ({ dataSet }) => 
             headerCells.push(<TableHeaderCell key={++i} value={fieldDescription.label} />)
 
         } else {
-            if (fieldDescription.foreignModel) {
-                headerCells.push(<TableHeaderCell key={++i} value={fieldDescription.label} />)
-            }
+            // if (fieldDescription.foreignModel) {
+            //     headerCells.push(<TableHeaderCell key={++i} value={fieldDescription.label} />)
+            // }
         }
     });
 
