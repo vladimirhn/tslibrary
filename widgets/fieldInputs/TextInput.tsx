@@ -1,7 +1,6 @@
 import React, {FunctionComponent} from "react";
 import Data from "../../data/dataObject/Data";
 import ObjectFieldDescription from "../../data/dataObject/objectFieldsDescriptions/ObjectFieldDescription";
-import {InputLayout} from "./InputsLayout";
 import {InlineLayout} from "../layouts/InlineLayout";
 
 interface properties {

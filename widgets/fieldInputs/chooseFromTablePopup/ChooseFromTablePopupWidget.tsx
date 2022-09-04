@@ -8,14 +8,17 @@ import DataObject from "../../../data/dataObject/DataObject";
 import ObjectFieldDescription from "../../../data/dataObject/objectFieldsDescriptions/ObjectFieldDescription";
 import {DataSetTable} from "../../tables/dataSetTable/DataSetTable";
 import DataObjectState from "../../../data/dataObject/DataObjectState";
+import Consumer from "../../../functions/interfaces/Consumer";
 
 interface properties {
     config:TableConfig;
     exampleObjectState:DataObjectState;
     fieldDescription:ObjectFieldDescription;
+    dataObjectConsumer?:Consumer<DataObject<any>>;
 }
 
-export const ChooseFromTablePopupWidget: FunctionComponent<properties> = ({ config, exampleObjectState, fieldDescription }) => {
+export const ChooseFromTablePopupWidget: FunctionComponent<properties> = ({ config, exampleObjectState,
+                                                                            fieldDescription ,dataObjectConsumer}) => {
 
     const [repository, setRepository] = useState<Repository<any>>(Repository.empty(fieldDescription.foreignModel));
 
@@ -37,11 +40,13 @@ export const ChooseFromTablePopupWidget: FunctionComponent<properties> = ({ conf
     const applySelection = (entry:DataObject<any>) => {
         setIsOpen(false);
         exampleObjectState.setValue(fieldDescription, entry.data?.id);
+        if (dataObjectConsumer) dataObjectConsumer(entry);
     }
 
     const dropSelection = () => {
         setIsOpen(false);
         exampleObjectState.setValue(fieldDescription, undefined);
+        if (dataObjectConsumer) dataObjectConsumer(undefined);
     }
 
     return <>
@@ -51,7 +56,7 @@ export const ChooseFromTablePopupWidget: FunctionComponent<properties> = ({ conf
             name={name}
             repository={repository}
             togglePopup={togglePopup}
-            isInline={true}
+            isInline={config.isInlineFilters}
         />
 
         {isOpen && <Popup

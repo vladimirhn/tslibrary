@@ -18,7 +18,7 @@ export default class DataObjectState extends StateElement<DataObject<any>> {
         this.runSetter();
     }
 
-    private runSetter() {
+    private runSetter(): void {
         this.state[1](this.state[0].clone());
     }
 
@@ -26,7 +26,11 @@ export default class DataObjectState extends StateElement<DataObject<any>> {
         return this.state[0];
     }
 
-    public getObject() {
+    public getObject(): {} {
         return this.state[0].data?.getObject();
+    }
+
+    public eraseObject(): void {
+        this.state[1](DataObject.empty);
     }
 }

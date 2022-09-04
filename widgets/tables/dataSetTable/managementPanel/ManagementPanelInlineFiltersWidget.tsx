@@ -1,6 +1,6 @@
 import React, {FunctionComponent, useState} from "react";
 import DataType from "../../../../data/dataObject/DataType";
-import {DateFilterInput} from "../../../filterInputs/DateFilterInput";
+import {DataObjectDateInput} from "../../../fieldInputs/dates/DataObjectDateInput";
 import {ComboBoxFromMapObject} from "../../../fieldInputs/comboboxes/comboBoxFromMapObject/ComboBoxFromMapObject";
 import Symbols from "../../../../misc/Symbols";
 import {ComboBoxFromForeign} from "../../../fieldInputs/comboboxes/comboBoxFromForeign/ComboBoxFromForeign";
@@ -20,7 +20,7 @@ export const ManagementPanelInlineFiltersWidget: FunctionComponent<properties> =
 
         if (filterFieldDescription.type === DataType.DATE) {
 
-            return <DateFilterInput
+            return <DataObjectDateInput
                 key={index}
                 exampleObjectState={exampleObjectState}
                 fieldDescription={filterFieldDescription}

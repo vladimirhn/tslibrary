@@ -1,7 +1,7 @@
 import React, {FunctionComponent, useState} from "react";
-import Button from "../../../buttons/Button";
+import {Button} from "../../../buttons/Button";
 import DataType from "../../../../data/dataObject/DataType";
-import {DateFilterInput} from "../../../filterInputs/DateFilterInput";
+import {DataObjectDateInput} from "../../../fieldInputs/dates/DataObjectDateInput";
 import {ChooseFromTablePopupWidget} from "../../../fieldInputs/chooseFromTablePopup/ChooseFromTablePopupWidget";
 import {ComboBoxFromMapObject} from "../../../fieldInputs/comboboxes/comboBoxFromMapObject/ComboBoxFromMapObject";
 import Repository from "../../../../data/backend/Repository";
@@ -20,7 +20,7 @@ export const ManagementPanelFiltersWidget: FunctionComponent<properties> = ({ re
     const exampleObjectState:DataObjectState = new DataObjectState(useState<DataObject<any>>(DataObject.empty));
 
     const applyFilterButton = <Button
-        funct={() => {repository.fetchFiltered(exampleObjectState.getDataObject()); toggleVisibilityFunct()}}
+        onClick={() => {repository.fetchFiltered(exampleObjectState.getDataObject()); toggleVisibilityFunct()}}
         label={"Применить фильтры"}
         enabled={!exampleObjectState.getDataObject().data?.isDataFieldsEmpty()}
     />
@@ -29,7 +29,7 @@ export const ManagementPanelFiltersWidget: FunctionComponent<properties> = ({ re
 
         if (filterFieldDescription.type === DataType.DATE) {
 
-            return <DateFilterInput
+            return <DataObjectDateInput
                 key={index}
                 exampleObjectState={exampleObjectState}
                 fieldDescription={filterFieldDescription}

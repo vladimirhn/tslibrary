@@ -2,7 +2,6 @@ import React, {FunctionComponent} from "react";
 import {ComboBoxEmptyOption} from "../ComboBoxEmptyOption";
 import {ComboBoxIdLabelOption} from "./ComboBoxIdLabelOption";
 import ObjectFieldDescription from "../../../../data/dataObject/objectFieldsDescriptions/ObjectFieldDescription";
-import DataObject from "../../../../data/dataObject/DataObject";
 import Runnable from "../../../../functions/interfaces/Runnable";
 import Symbols from "../../../../misc/Symbols";
 import DataObjectState from "../../../../data/dataObject/DataObjectState";

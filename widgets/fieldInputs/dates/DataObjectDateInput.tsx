@@ -1,17 +1,14 @@
-import DataType from "../../data/dataObject/DataType";
+import DataType from "../../../data/dataObject/DataType";
 import React, {FunctionComponent} from "react";
-import Repository from "../../data/backend/Repository";
-import Consumer from "../../functions/interfaces/Consumer";
-import ObjectFieldDescription from "../../data/dataObject/objectFieldsDescriptions/ObjectFieldDescription";
-import DataObject from "../../data/dataObject/DataObject";
-import DataObjectState from "../../data/dataObject/DataObjectState";
+import ObjectFieldDescription from "../../../data/dataObject/objectFieldsDescriptions/ObjectFieldDescription";
+import DataObjectState from "../../../data/dataObject/DataObjectState";
 
 interface properties {
     exampleObjectState:DataObjectState;
     fieldDescription:ObjectFieldDescription;
 }
 
-export const DateFilterInput: FunctionComponent<properties> = ({ exampleObjectState, fieldDescription }) => {
+export const DataObjectDateInput: FunctionComponent<properties> = ({ exampleObjectState, fieldDescription }) => {
 
     if (fieldDescription.type !== DataType.DATE) {
         throw Error("Wrong data type! DateInput supports DataType.DATE fields only.");

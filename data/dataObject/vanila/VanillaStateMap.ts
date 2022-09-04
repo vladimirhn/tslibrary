@@ -1,7 +1,6 @@
 import React from "react";
 import ObjectFieldDescription from "../objectFieldsDescriptions/ObjectFieldDescription";
 import {getFromObject, setToObject} from "./VanilaObjects";
-import Arrays from "../../../tools/Arrays";
 
 export default class VanillaStateMap<T extends Map<any, any>> {
 

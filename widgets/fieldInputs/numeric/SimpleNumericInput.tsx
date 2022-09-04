@@ -1,5 +1,5 @@
 import React, {FunctionComponent} from "react";
-import Consumer from "../../functions/interfaces/Consumer";
+import Consumer from "../../../functions/interfaces/Consumer";
 
 interface properties {
     label?:string;

@@ -1,6 +1,5 @@
 import DataType from "../DataType";
 import Class from "../../../reflection/Class";
-import DomainClass from "../../../reflection/DomainClass";
 
 /**
  * Описание поля в объекте с данными. Основываясь на данном описании функции могут правильно отображать данные объекта
