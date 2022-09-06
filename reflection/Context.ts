@@ -1,4 +1,4 @@
-import AppStateData from "../appearance/layouts/BasicAppLayout/login/AppStateData";
+import AppStateData from "../visual/appearance/layouts/BasicAppLayout/login/AppStateData";
 
 export default class Context {
 

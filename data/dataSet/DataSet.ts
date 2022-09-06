@@ -94,7 +94,7 @@ export default class DataSet<T> {
         for (let t of this._entriesArray) {
             if (t.isSelected) return t;
         }
-        return null;
+        return undefined;
     }
 
     get allSelectedEntries() {
@@ -106,7 +106,8 @@ export default class DataSet<T> {
     }
 
     get hasSelection() {
-        return this.oneSelectedEntry !== null;
+        return this.oneSelectedEntry !== null
+            && this.oneSelectedEntry !== undefined;
     }
 
     public dropSelection = ():void => {

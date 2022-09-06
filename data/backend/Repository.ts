@@ -10,6 +10,7 @@ import DataObject from "../dataObject/DataObject";
 import Domain from "../../../application/domain/Domain";
 import Class from "../../reflection/Class";
 import Data from "../dataObject/Data";
+import NavigationState from "../../navigation/NavigationState";
 
 export default class Repository<T> {
 
@@ -28,7 +29,7 @@ export default class Repository<T> {
     };
     public _repoSetter:Consumer<any> | undefined;
 
-    private _defaultOrderBy:string | undefined;
+    private readonly _defaultOrderBy:string | undefined;
 
     private _state:RepositoryState = RepositoryState.NOT_INITIATED;
     private _dataState:DataState = DataState.UNFETCHED;
@@ -173,7 +174,6 @@ export default class Repository<T> {
     }
 
     updateData(example:Data<T>) {
-
         console.log("Обновляется: " + JSON.stringify(example));
         this.updateObject(example.getObject());
     }
