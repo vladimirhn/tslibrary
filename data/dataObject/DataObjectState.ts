@@ -23,8 +23,13 @@ export default class DataObjectState extends StateElement<DataObject<any>> {
     }
 
     public isEmpty():boolean {
-        const obj = this.state[0].data?.getObject();
-        return Object.keys(obj).length === 0 || !obj;
+        const obj = this.state[0]?.data?.getObject();
+
+        if (!obj) {
+            return true;
+        }
+
+        return  Object.keys(obj).length === 0 || !obj;
     }
 
     public getId():string | undefined {

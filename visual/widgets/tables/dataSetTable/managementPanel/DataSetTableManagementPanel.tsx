@@ -26,7 +26,7 @@ export const DataSetTableManagementPanel: FunctionComponent<properties> = ({ nav
     const dataSet:DataSet<any> = repository.dataSet;
 
     const hasLineProcessorState:BooleanState = new BooleanState(useState<boolean>(!!config.processLineWidget));
-    const addOrEditLineButton = hasLineProcessorState.getValue() || config.onAddEditButton ?
+    const addOrEditLineButton = hasLineProcessorState.getValue() || config.onAddEditButton || config.standardLineProcessor ?
         <Button
             enabled={true}
             label={dataSet.hasSelection ? "Редактировать" : "Добавить"}
@@ -34,8 +34,12 @@ export const DataSetTableManagementPanel: FunctionComponent<properties> = ({ nav
 
                 if (config.onAddEditButton) {
                     config.onAddEditButton()
+
+                } else if (config.standardLineProcessor) {
+                    navigation.proceed(DataSetTableSubPage.PROCESS_WITH_STANDARD_WIDGET);
+
                 } else {
-                    navigation.proceed(DataSetTableSubPage.PROCESS);
+                    navigation.proceed(DataSetTableSubPage.PROCESS_WITH_PROVIDED_WIDGET);
                 }
             }}
         />
@@ -44,7 +48,7 @@ export const DataSetTableManagementPanel: FunctionComponent<properties> = ({ nav
     const filterVisibilityState:BooleanState = new BooleanState(useState<boolean>(false));
     const dataSetHasData = dataSet && dataSet.size !== 0
     const dataSetHasFilters = dataSet.objectDescription && dataSet.objectDescription.filterFieldsDescriptions.length > 0;
-    const filterButton = dataSetHasData && dataSetHasFilters && repository.dataState !== DataState.FILTERED && !config.isInlineFilters ?
+    const filterButton = dataSetHasData && dataSetHasFilters && repository.dataState !== DataState.FILTERED && !config.inlineFilters ?
         <TrueFalseButton
             variableState={filterVisibilityState}
             trueLabel={"Скрыть фильтры"}
@@ -52,7 +56,7 @@ export const DataSetTableManagementPanel: FunctionComponent<properties> = ({ nav
         />
         : null;
 
-    const dropFiltersButton = (repository.dataState === DataState.FILTERED && !config.isInlineFilters) ?
+    const dropFiltersButton = (repository.dataState === DataState.FILTERED && !config.inlineFilters) ?
         <button onClick={() => {repository.fetchAll()}}
         >Сбросить фильтры</button>
         : null;
@@ -68,6 +72,6 @@ export const DataSetTableManagementPanel: FunctionComponent<properties> = ({ nav
         {config.allowFilters ? dropFiltersButton : null}
 
         {filterVisibilityState.getValue() ? <ManagementPanelFiltersWidget repository={repository} filterVisibilityState={filterVisibilityState}/> : null}
-        {config.isInlineFilters ? <ManagementPanelInlineFiltersWidget repository={repository} />: null}
+        {config.inlineFilters ? <ManagementPanelInlineFiltersWidget repository={repository} />: null}
     </>
 }

@@ -6,6 +6,7 @@ export default class TableConfig {
     private _allowDelete:boolean = true;
     private _allowFilters:boolean = true;
     private _inlineFilters:boolean = false;
+    private _standardLineProcessor:boolean = false;
 
     private _processLineWidget:JSX.Element | null = null;
 
@@ -22,8 +23,13 @@ export default class TableConfig {
         return this;
     }
 
-    inlineFilters(): TableConfig {
+    useInlineFilters(): TableConfig {
         this._inlineFilters = true;
+        return this;
+    }
+
+    useStandardLineProcessor(): TableConfig {
+        this._standardLineProcessor = true;
         return this;
     }
 
@@ -51,8 +57,12 @@ export default class TableConfig {
         return this._allowFilters;
     }
 
-    get isInlineFilters(): boolean {
+    get inlineFilters(): boolean {
         return this._inlineFilters;
+    }
+
+    get standardLineProcessor(): boolean {
+        return this._standardLineProcessor;
     }
 
     get processLineWidget(): JSX.Element | null {

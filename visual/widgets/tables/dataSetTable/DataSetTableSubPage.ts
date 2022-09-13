@@ -1,4 +1,5 @@
 
 export enum DataSetTableSubPage {
-    PROCESS
+    PROCESS_WITH_PROVIDED_WIDGET,
+    PROCESS_WITH_STANDARD_WIDGET,
 }

@@ -56,7 +56,7 @@ export const ChooseFromTablePopupWidget: FunctionComponent<properties> = ({ conf
             name={name}
             repository={repository}
             togglePopup={togglePopup}
-            isInline={config.isInlineFilters}
+            isInline={config.inlineFilters}
         />
 
         {isOpen && <Popup
@@ -67,7 +67,7 @@ export const ChooseFromTablePopupWidget: FunctionComponent<properties> = ({ conf
                 />}
                 <DataSetTableWidget
                     repository={repository}
-                    config={new TableConfig().inlineFilters().noDelete().onSelectionFunc(applySelection)}
+                    config={new TableConfig().useInlineFilters().noDelete().onSelectionFunc(applySelection)}
                 />
             </>}
             handleClose={togglePopup}

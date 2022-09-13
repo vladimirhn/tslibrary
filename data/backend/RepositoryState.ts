@@ -17,4 +17,8 @@ export default class RepositoryState<T> {
     public initialFetchFiltered(example:DataObject<any>):void {
         this._state[0].initialFetchFiltered(example, this._state[1]);
     }
+
+    public initialFetchAll():void {
+        this._state[0].initialFetchAll(this._state[1]);
+    }
 }

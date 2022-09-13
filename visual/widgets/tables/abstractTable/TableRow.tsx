@@ -10,15 +10,15 @@ interface properties {
     entry?:DataObject<any>;
     isSelected?:boolean;
     onClick?:MouseEventHandler<HTMLTableRowElement>;
-    onChoice?:Consumer<any>
+    onSelection?:Consumer<any>
 }
 
 export const TableRow: FunctionComponent<properties> = ({ cells , lastCell, entry,
-                                                          isSelected, onClick, onChoice}) => {
+                                                          isSelected, onClick, onSelection}) => {
 
     let click;
-    if (onChoice) {
-        click = () => {onChoice(entry)}
+    if (onSelection) {
+        click = () => {onSelection(entry)}
 
     } else if (onClick) {
         click = onClick;

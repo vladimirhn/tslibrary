@@ -69,5 +69,5 @@ export const DataEntryTableRow: FunctionComponent<properties> = ({ entry, onSele
 
     });
 
-    return <TableRow cells={cells} lastCell={true} isSelected={entry.isSelected} onClick={entry.processClick} entry={entry} onChoice={onSelection}/>
+    return <TableRow cells={cells} lastCell={true} isSelected={entry.isSelected} onClick={entry.processClick} entry={entry} onSelection={onSelection}/>
 }

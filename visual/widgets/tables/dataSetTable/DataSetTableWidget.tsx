@@ -6,6 +6,7 @@ import NavigationState from "../../../../navigation/NavigationState";
 import {DataSetTableSubPage} from "./DataSetTableSubPage";
 import {Button} from "../../buttons/Button";
 import SharedServices from "../../../../SharedServices";
+import {ProcessLineWidget} from "../../../../mechanics/lineProcessing/ProcessLineWidget";
 
 interface properties {
     repository:Repository<any>;
@@ -29,10 +30,19 @@ export const DataSetTableWidget: FunctionComponent<properties> = ({ repository, 
     const backButton = <Button enabled={true} label={"Назад"} onClick={navigation.retreat}/>
 
     switch (navigation.currentPage) {
-        case DataSetTableSubPage.PROCESS:
+        case DataSetTableSubPage.PROCESS_WITH_PROVIDED_WIDGET:
             return <>
                 {backButton}
                 {config.processLineWidget}
+            </>
+
+        case DataSetTableSubPage.PROCESS_WITH_STANDARD_WIDGET:
+            return <>
+                <ProcessLineWidget
+                    sharedServices={SharedServices.create()
+                        .withNavigation(navigation)
+                        .withRepository(repository)}
+                />
             </>
 
         default:
