@@ -4,7 +4,7 @@ import Runnable from "../../../functions/interfaces/Runnable";
 interface properties {
     enabled:boolean;
     label:string;
-    onClick:Runnable;
+    onClick?:Runnable;
 }
 
 export const Button: FunctionComponent<properties> = ({onClick, label, enabled}) => {

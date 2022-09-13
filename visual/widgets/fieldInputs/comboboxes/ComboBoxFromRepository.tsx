@@ -5,7 +5,7 @@ import {ComboBoxEntryOption} from "./comboBoxFromForeign/ComboBoxEntryOption";
 import Consumer from "../../../../functions/interfaces/Consumer";
 import Symbols from "../../../../misc/Symbols";
 import DataObject from "../../../../data/dataObject/DataObject";
-import {RepositoryState} from "../../../../data/backend/RepositoryState";
+import {FetchingState} from "../../../../data/backend/FetchingState";
 
 
 interface properties {
@@ -13,12 +13,14 @@ interface properties {
     repository:Repository<any>;
     consumeChoice:Consumer<DataObject<any>>;
     isInline:boolean;
-    hideIfEmpty:boolean
+    hideIfEmpty:boolean;
+    selectedId?:string;
 }
 
-export const ComboBoxFromRepository: FunctionComponent<properties> = ({ label, repository , consumeChoice, isInline, hideIfEmpty}) => {
+export const ComboBoxFromRepository: FunctionComponent<properties> = ({ label, repository , consumeChoice, isInline, hideIfEmpty, selectedId}) => {
 
     if (hideIfEmpty && repository.dataSet.size === 0) return null;
+    if (selectedId) repository.dataSet.setSelectedById(selectedId);
 
     const options = [];
     let i = 0;
@@ -58,7 +60,7 @@ export const ComboBoxFromRepository: FunctionComponent<properties> = ({ label, r
 
     let fetchingWidget = null;
 
-    if (repository.state === RepositoryState.FETCHING_DATA) fetchingWidget = <span>загрузка данных</span>;
+    if (repository.state === FetchingState.FETCHING_DATA) fetchingWidget = <span>загрузка данных</span>;
 
     return <div className={isInline ? "inline" : ""}>
         <div className={isInline ? "inline" : "inline-200-px"}>{label}{Symbols.SPACE}️</div>

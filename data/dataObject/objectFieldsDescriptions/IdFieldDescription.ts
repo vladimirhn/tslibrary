@@ -6,6 +6,7 @@ export default class IdFieldDescription {
 
         return ObjectFieldDescription
             .label("id")
-            .setVisible(false);
+            .setVisible(false)
+            .setIsId(true);
     }
 }

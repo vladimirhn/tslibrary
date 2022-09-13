@@ -37,10 +37,12 @@ export default class Data<T> {
     }
 
     public getValue = (fieldName:string):string => {
+        if (fieldName === "Name") fieldName = "name";
         return this._obj[fieldName];
     }
 
     public setValue = (fieldName:string, value:string|undefined):void => {
+        if (fieldName === "Name") fieldName = "name";
         this._obj[fieldName] = value;
         if (this.update) {
             const duplicate = Data.pure();

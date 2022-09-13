@@ -21,6 +21,10 @@ export default class NavigationState<T> {
         this._state[1]([]);
     }
 
+    public isHome = ():boolean => {
+        return this._state[0].length === 0;
+    }
+
     public clean = ():void => {
         this._state[0] = [];
     }

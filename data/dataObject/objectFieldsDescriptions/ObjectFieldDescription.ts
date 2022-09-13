@@ -12,6 +12,7 @@ export default class ObjectFieldDescription {
     }
 
     field:string = "";       //Имя поля объекта. Инициализируется автоматически в DataObject.
+    private _isId = false;
     private _label:string;           //Заголовок столбца таблицы для данного поля
     private _isMain = false;         //Можно ли свести данные всего объекта, к данным этого поля. Поле-заголовок.
     type = DataType.STRING;  //Тип данных поля, если тип стандартный. Если кастомный, то _customType
@@ -65,13 +66,18 @@ export default class ObjectFieldDescription {
         return this;
     }
 
-    public setFilter(filter:boolean) {
+    public setFilter(filter:boolean):ObjectFieldDescription {
         this._filter = filter;
         return this;
     }
 
-    public setMandatory(mandatory:boolean) {
+    public setMandatory(mandatory:boolean):ObjectFieldDescription {
         this._isMandatory = mandatory;
+        return this;
+    }
+
+    public setIsId(isId:boolean):ObjectFieldDescription {
+        this._isId = isId;
         return this;
     }
 
@@ -105,5 +111,9 @@ export default class ObjectFieldDescription {
 
     get filter():boolean {
         return this._filter;
+    }
+
+    get isId():boolean {
+        return this._isId;
     }
  }

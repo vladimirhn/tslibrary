@@ -8,10 +8,10 @@ import Consumer from "../../../../functions/interfaces/Consumer";
 
 interface properties {
     entry:DataObject<any>;
-    onChoice?:Consumer<any>
+    onSelection?:Consumer<any>
 }
 
-export const DataEntryTableRow: FunctionComponent<properties> = ({ entry, onChoice }) => {
+export const DataEntryTableRow: FunctionComponent<properties> = ({ entry, onSelection }) => {
 
     const cells:JSX.Element[] = [];
     let i = 0;
@@ -69,5 +69,5 @@ export const DataEntryTableRow: FunctionComponent<properties> = ({ entry, onChoi
 
     });
 
-    return <TableRow cells={cells} lastCell={true} isSelected={entry.isSelected} onClick={entry.processClick} entry={entry} onChoice={onChoice}/>
+    return <TableRow cells={cells} lastCell={true} isSelected={entry.isSelected} onClick={entry.processClick} entry={entry} onChoice={onSelection}/>
 }

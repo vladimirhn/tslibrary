@@ -1,7 +1,7 @@
 import Fetcher from "../../tools/Fetcher";
 import ObjectDescription from "./ObjectDescription";
 import Consumer from "../../functions/interfaces/Consumer";
-import {RepositoryState} from "./RepositoryState";
+import {FetchingState} from "./FetchingState";
 import DataSet from "../dataSet/DataSet";
 import DomainClass from "../../reflection/DomainClass";
 import Runnable from "../../functions/interfaces/Runnable";
@@ -27,11 +27,12 @@ export default class Repository<T> {
             this._repoSetter(this.duplicate());
         }
     };
-    public _repoSetter:Consumer<any> | undefined;
+    private _initialExample?:DataObject<T>;
+    public _repoSetter?:Consumer<any>;
 
     private readonly _defaultOrderBy:string | undefined;
 
-    private _state:RepositoryState = RepositoryState.NOT_INITIATED;
+    private _state:FetchingState = FetchingState.NOT_INITIATED;
     private _dataState:DataState = DataState.UNFETCHED;
 
     constructor(domainClass:DomainClass<T> | undefined) {
@@ -47,7 +48,7 @@ export default class Repository<T> {
         return this._objectDescription;
     }
 
-    get state():RepositoryState {
+    get state():FetchingState {
         return this._state;
     }
 
@@ -72,11 +73,11 @@ export default class Repository<T> {
         let path = this._path + "/get_all";
         if (this._defaultOrderBy) path += "/" + this._defaultOrderBy[0] + "/" + this._defaultOrderBy[1];
 
-        this._state = RepositoryState.FETCHING_DATA;
+        this._state = FetchingState.FETCHING_DATA;
 
         Fetcher.get(path)
             .then((result:any) => {
-                this._state = RepositoryState.DATA_FETCHED;
+                this._state = FetchingState.DATA_FETCHED;
                 this._dataState = DataState.FETCHED_ALL;
                 this.dataSet.setUpDataSet(this._objectDescription, this._path, result, this._rerender);
                 this._rerender();
@@ -84,6 +85,7 @@ export default class Repository<T> {
     }
 
     initialFetchFiltered = (example:DataObject<T>, repoSetter:Consumer<any>) => {
+        this._initialExample = example;
         this._repoSetter = repoSetter;
         this.fetchFiltered(example);
     }
@@ -100,12 +102,12 @@ export default class Repository<T> {
             return;
         }
 
-        this._state = RepositoryState.FETCHING_DATA;
+        this._state = FetchingState.FETCHING_DATA;
 
         Fetcher.postForJson(example.data?.getObject(), this._path + "/get_filtered")
             .then(result => {
 
-                this._state = RepositoryState.DATA_FETCHED;
+                this._state = FetchingState.DATA_FETCHED;
                 this._dataState = DataState.FILTERED;
                 this.dataSet.setUpDataSet(this._objectDescription, this._path, result, this._rerender);
                 this._rerender();
@@ -130,7 +132,11 @@ export default class Repository<T> {
 
                 alert("Сохранено");
 
-                this.fetchAll();
+                if (this._initialExample) {
+                    this.fetchFiltered(this._initialExample)
+                } else {
+                    this.fetchAll();
+                }
             });
     }
 
@@ -184,7 +190,11 @@ export default class Repository<T> {
 
                 alert("Обновлено");
 
-                this.fetchAll();
+                if (this._initialExample) {
+                    this.fetchFiltered(this._initialExample)
+                } else {
+                    this.fetchAll();
+                }
             });
     }
 }

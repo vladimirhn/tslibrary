@@ -2,7 +2,7 @@ import React, {FunctionComponent} from "react";
 import Symbols from "../../../../misc/Symbols";
 import Repository from "../../../../data/backend/Repository";
 import Runnable from "../../../../functions/interfaces/Runnable";
-import {RepositoryState} from "../../../../data/backend/RepositoryState";
+import {FetchingState} from "../../../../data/backend/FetchingState";
 
 interface properties {
     repository:Repository<any>;
@@ -16,7 +16,7 @@ export const ChooseFromTableResultWidget: FunctionComponent<properties> = ({ lab
 
     let choiceLabel = name || "выбрать";
 
-    let widget = repository.state === RepositoryState.FETCHING_DATA ?
+    let widget = repository.state === FetchingState.FETCHING_DATA ?
         <span>загрузка данных</span>
         :
         <div className={isInline ? "inline" : "inline-200-px"}

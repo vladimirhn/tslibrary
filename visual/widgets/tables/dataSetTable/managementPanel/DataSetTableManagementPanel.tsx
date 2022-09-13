@@ -17,19 +17,27 @@ interface properties {
     navigation:NavigationState<DataSetTableSubPage>;
     repository:Repository<any>;
     config:TableConfig;
-    flipLogic:any
+    flipLogic:any;
 }
 
-export const DataSetTableManagementPanel: FunctionComponent<properties> = ({ navigation, repository, config, flipLogic }) => {
+export const DataSetTableManagementPanel: FunctionComponent<properties> = ({ navigation, repository,
+                                                                               config, flipLogic }) => {
 
     const dataSet:DataSet<any> = repository.dataSet;
 
     const hasLineProcessorState:BooleanState = new BooleanState(useState<boolean>(!!config.processLineWidget));
-    const addOrEditLineButton = hasLineProcessorState.getValue() ?
+    const addOrEditLineButton = hasLineProcessorState.getValue() || config.onAddEditButton ?
         <Button
             enabled={true}
             label={dataSet.hasSelection ? "Редактировать" : "Добавить"}
-            onClick={() => {navigation.proceed(DataSetTableSubPage.PROCESS);}}
+            onClick={() => {
+
+                if (config.onAddEditButton) {
+                    config.onAddEditButton()
+                } else {
+                    navigation.proceed(DataSetTableSubPage.PROCESS);
+                }
+            }}
         />
         :null
 

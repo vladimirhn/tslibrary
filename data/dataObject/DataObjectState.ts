@@ -18,6 +18,19 @@ export default class DataObjectState extends StateElement<DataObject<any>> {
         this.runSetter();
     }
 
+    public setDataObject(dataObject:DataObject<any> | undefined):void {
+        this.state[1](dataObject || DataObject.empty);
+    }
+
+    public isEmpty():boolean {
+        const obj = this.state[0].data?.getObject();
+        return Object.keys(obj).length === 0 || !obj;
+    }
+
+    public getId():string | undefined {
+        return this.state[0].data?.id;
+    }
+
     private runSetter(): void {
         this.state[1](this.state[0].clone());
     }

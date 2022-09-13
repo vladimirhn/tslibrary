@@ -1,4 +1,5 @@
-import SharedServices from "../../../../SharedServices";
+import Consumer from "../../../../functions/interfaces/Consumer";
+import Runnable from "../../../../functions/interfaces/Runnable";
 
 export default class TableConfig {
 
@@ -6,9 +7,10 @@ export default class TableConfig {
     private _allowFilters:boolean = true;
     private _inlineFilters:boolean = false;
 
-    // private _sharedServices:SharedServices | null = null;
     private _processLineWidget:JSX.Element | null = null;
 
+    private _onSelection?:Consumer<any>;
+    private _onAddEditButton?:Runnable;
 
     noDelete(): TableConfig {
         this._allowDelete = false;
@@ -25,13 +27,18 @@ export default class TableConfig {
         return this;
     }
 
-    // withSharedServices(sharedServices:SharedServices) {
-    //     this._sharedServices = sharedServices;
-    //     return this;
-    // }
-
     processLinesWith(widget:JSX.Element) {
         this._processLineWidget = widget;
+        return this;
+    }
+
+    onSelectionFunc(selectionConsumer:Consumer<any>):TableConfig {
+        this._onSelection = selectionConsumer;
+        return this;
+    }
+
+    onAddEditButtonFunc(funct:Runnable):TableConfig {
+        this._onAddEditButton = funct;
         return this;
     }
 
@@ -47,12 +54,16 @@ export default class TableConfig {
     get isInlineFilters(): boolean {
         return this._inlineFilters;
     }
-    //
-    // get sharedServices():SharedServices | null {
-    //     return this._sharedServices;
-    // }
 
     get processLineWidget(): JSX.Element | null {
         return this._processLineWidget;
+    }
+
+    get onSelection():Consumer<any> | undefined {
+        return this._onSelection;
+    }
+
+    get onAddEditButton():Runnable | undefined {
+        return  this._onAddEditButton;
     }
 }

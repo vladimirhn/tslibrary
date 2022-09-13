@@ -2,7 +2,7 @@ import Repository from "../../../../data/backend/Repository";
 import TableConfig from "./TableConfig";
 import Consumer from "../../../../functions/interfaces/Consumer";
 import React, {FunctionComponent, useState} from "react";
-import {RepositoryState} from "../../../../data/backend/RepositoryState";
+import {FetchingState} from "../../../../data/backend/FetchingState";
 import {DataEntryTableRow} from "./DataEntryTableRow";
 import {DataSetTableManagementPanel} from "./managementPanel/DataSetTableManagementPanel";
 import {DataSetTableHead} from "./DataSetTableHead";
@@ -14,10 +14,10 @@ interface properties {
     navigation:NavigationState<DataSetTableSubPage>;
     repository:Repository<any>;
     config:TableConfig;
-    onChoice?:Consumer<any>;
 }
 
-export const DataSetTable: FunctionComponent<properties> = ({ navigation, repository, config , onChoice}) => {
+export const DataSetTable: FunctionComponent<properties> = ({ navigation, repository,
+                                                                config }) => {
 
     const linesPerPage = 20;
     const [pageNum, setPageNum] = useState(0);
@@ -32,7 +32,7 @@ export const DataSetTable: FunctionComponent<properties> = ({ navigation, reposi
 
     let rows:(JSX.Element | null)[] = [];
 
-    if (repository.state !== RepositoryState.DATA_FETCHED) {
+    if (repository.state !== FetchingState.DATA_FETCHED) {
 
         rows.push(<tr key={-1}>
             <td style={{textAlign: "center"}}>
@@ -67,7 +67,7 @@ export const DataSetTable: FunctionComponent<properties> = ({ navigation, reposi
                 return <DataEntryTableRow
                     key={index}
                     entry={entry}
-                    onChoice={onChoice}
+                    onSelection={config.onSelection}
                 />
             } else return null;
         }).filter((e:JSX.Element | null) => e !== null);

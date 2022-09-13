@@ -1,6 +1,6 @@
 import React, {FunctionComponent} from "react";
-import {InputLayout} from "./InputsLayout";
-import Consumer from "../../../functions/interfaces/Consumer";
+import {InputLayout} from "../InputsLayout";
+import Consumer from "../../../../functions/interfaces/Consumer";
 
 interface properties {
     label?:string;
