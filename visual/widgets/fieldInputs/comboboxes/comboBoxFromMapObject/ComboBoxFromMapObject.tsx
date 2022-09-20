@@ -11,7 +11,7 @@ interface properties {
     fieldDescription:ObjectFieldDescription;
     noEmpty:boolean;
     isInline:boolean;
-    onChoice:Runnable;
+    onChoice?:Runnable;
 }
 
 export const ComboBoxFromMapObject: FunctionComponent<properties> = ({exampleObjectState,
@@ -46,7 +46,10 @@ export const ComboBoxFromMapObject: FunctionComponent<properties> = ({exampleObj
         <div className={isInline ? "inline" : "inline-200-px"}>
 
             <select
-                onChange={(e) => {exampleObjectState.setValue(fieldDescription, e.target.value); onChoice();}}
+                onChange={(e) => {
+                    exampleObjectState.setValue(fieldDescription, e.target.value);
+                    if (onChoice) onChoice();
+                }}
                 value={id}
                 style={{minWidth:'200px'}}>
                 {options}

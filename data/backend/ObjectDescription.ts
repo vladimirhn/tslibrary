@@ -57,6 +57,8 @@ export default class ObjectDescription<T> {
         const mandatoryFields = [];
         for (let fieldName in klass) {
 
+            if (fieldName === "Name") fieldName = "name";
+
             if (klass[fieldName] instanceof ObjectFieldDescription) {
 
                 const description: ObjectFieldDescription = klass[fieldName];

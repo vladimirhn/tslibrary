@@ -14,9 +14,13 @@ export default class DataObject<T> {
         return new DataObject().setUp({}, DataSet.empty());
     }
 
+    public static fromClass(klass:Class<any>): DataObject<any> {
+        return DataObject.fromObject({}, klass);
+    }
+
     public static fromObject(obj:{}, klass:Class<any>): DataObject<any> {
         const dataObject:DataObject<any> = new DataObject().setUp(obj, DataSet.empty());
-        dataObject.objectDescription = Domain.get(klass).objectDescription();
+        dataObject._objectDescription = Domain.get(klass).objectDescription();
         return dataObject;
     }
 
@@ -28,7 +32,7 @@ export default class DataObject<T> {
     }
 
     public data?:Data<T>;
-    private objectDescription?:ObjectDescription<T>;
+    private _objectDescription?:ObjectDescription<T>;
     private _tableDescription?:TableDescription;
     public dataSet?:DataSet<T>;
 
@@ -45,20 +49,26 @@ export default class DataObject<T> {
     }
 
     public setUp = (obj:any, dataSet:DataSet<T>) => {
-        this.objectDescription = dataSet.objectDescription;
-        this._tableDescription = dataSet.tableDescription;
+
         this.dataSet = dataSet;
-        this.data = new Data(obj, this.objectDescription);
+        this.data = new Data(obj, this._objectDescription);
+
+        if (dataSet.objectDescription) this._objectDescription = dataSet.objectDescription;
+        if (dataSet.tableDescription) this._tableDescription = dataSet.tableDescription;
 
         return this;
     }
 
     public clone = ():DataObject<any> => {
-        return new DataObject<T>(undefined).setUp(this.data?.getObject(), this.dataSet || DataSet.empty());
+        const newDataObject:DataObject<any> = new DataObject<T>(undefined).setUp(this.data?.getObject(), this.dataSet || DataSet.empty());
+        newDataObject._objectDescription = this._objectDescription;
+        newDataObject._tableDescription = this._tableDescription;
+
+        return newDataObject;
     }
 
     public reduceTo(type:Class<T>):DataObject<T> {
-        this.objectDescription = Domain.get(type).objectDescription();
+        this._objectDescription = Domain.get(type).objectDescription();
         this._tableDescription = DataSchema.table(Domain.get(type).path);
 
         return this;
@@ -69,7 +79,7 @@ export default class DataObject<T> {
     }
 
     get fieldsDescriptions():ObjectFieldDescription[] | undefined {
-        return this.objectDescription?.fieldsDescriptions;
+        return this._objectDescription?.fieldsDescriptions;
     }
 
     get tableDescription(): TableDescription | undefined {
@@ -80,8 +90,8 @@ export default class DataObject<T> {
 
         let result: string|undefined = "";
 
-        if (this.objectDescription?.mainFieldDescription) {
-            const mainFieldDesc = this.objectDescription.mainFieldDescription;
+        if (this._objectDescription?.mainFieldDescription) {
+            const mainFieldDesc = this._objectDescription.mainFieldDescription;
 
             if (mainFieldDesc.type === DataType.FOREIGN_OBJECT) {
                 let foreignObject = this.data?.getValueByField(mainFieldDesc);
@@ -95,27 +105,27 @@ export default class DataObject<T> {
                 result = this.data?.getValue(mainFieldDesc.field);
             }
         } else {
-            console.log(this.objectDescription + "has no mainFieldDescription, but trying to access it")
+            console.log(this._objectDescription + "has no mainFieldDescription, but trying to access it")
         }
 
         return result;
     }
 
     get mainFieldDescription():ObjectFieldDescription | undefined {
-        if (this.objectDescription) {
-            return this.objectDescription.mainFieldDescription;
+        if (this._objectDescription) {
+            return this._objectDescription.mainFieldDescription;
         }
         return undefined;
     }
 
     get emptyMandatoryFieldsDescriptions() {
-        if (this.objectDescription?.mandatoryFieldsDescriptions.length === 0) {
+        if (this._objectDescription?.mandatoryFieldsDescriptions.length === 0) {
             return null;
         }
 
         const emptyMandatoryFieldsDescs = [];
-        if (this.objectDescription) {
-            for (let mandatoryFieldDesc of this.objectDescription.mandatoryFieldsDescriptions) {
+        if (this._objectDescription) {
+            for (let mandatoryFieldDesc of this._objectDescription.mandatoryFieldsDescriptions) {
                 if (!this.data?.getValue(mandatoryFieldDesc.field)) {
                     emptyMandatoryFieldsDescs.push(mandatoryFieldDesc);
                 }

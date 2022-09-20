@@ -18,7 +18,7 @@ export default class TableConfig {
         return this;
     }
 
-    noFilers(): TableConfig {
+    noFilters(): TableConfig {
         this._allowFilters = false;
         return this;
     }
