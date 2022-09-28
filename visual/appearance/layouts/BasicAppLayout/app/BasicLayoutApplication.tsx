@@ -3,13 +3,12 @@ import './app.css';
 import React, {FunctionComponent, useEffect, useState} from 'react';
 
 import AppStateData from "../login/AppStateData";
-import InnerEvents from "../../../../../events/InnerEvents";
-import innerEventEffect from "../../../../../events/InnerEventEffect";
 import {LoginPage} from "../login/LoginPage";
 import {ApplicationPage} from "./ApplicationPage";
 import Page from "../../../../pages/Page";
 import Context from "../../../../../reflection/Context";
 import DataSchema from "../../../../../data/schema/DataSchema";
+import BooleanState from "../../../../../data/dataObject/vanila/BooleanState";
 
 interface properties {
     pages: Page[];
@@ -17,24 +16,22 @@ interface properties {
 
 export const BasicLayoutApplication: FunctionComponent<properties> = ({ pages }) => {
 
-    const [appStateData,] = useState<AppStateData>(Context.appStateData);
-    const [, setUser] = useState<string>("");
+    const needLoginState:BooleanState = new BooleanState(useState(true));
+    const appState:AppStateData = Context.appStateData;
 
-    let updateUser = ():void => {
-        setUser(appStateData.user)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    useEffect(innerEventEffect(InnerEvents.authRelatedActionPerformed, updateUser), []);
+    useEffect(() => {
+        Context.appStateData.userState = needLoginState;
+    }, [needLoginState])
 
 
     const [gotSchema, setGotSchema] = useState<boolean>(DataSchema.gotScheme());
-    if (!appStateData.needLogin() && !DataSchema.gotScheme()) {
+    if (!appState.needLogin() && !DataSchema.gotScheme()) {
         DataSchema.getSchema(setGotSchema);
     }
 
     let screen;
 
-    if (appStateData.needLogin()) {
+    if (needLoginState.getValue()) {
         screen = <LoginPage />;
     } else {
         if (!gotSchema) screen = <>Загрузка настроек...</>;

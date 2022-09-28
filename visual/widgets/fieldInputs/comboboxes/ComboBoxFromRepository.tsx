@@ -3,21 +3,20 @@ import Repository from "../../../../data/backend/Repository";
 import {ComboBoxEmptyOption} from "./ComboBoxEmptyOption";
 import {ComboBoxEntryOption} from "./comboBoxFromForeign/ComboBoxEntryOption";
 import Consumer from "../../../../functions/interfaces/Consumer";
-import Symbols from "../../../../misc/Symbols";
 import DataObject from "../../../../data/dataObject/DataObject";
 import {FetchingState} from "../../../../data/backend/FetchingState";
+import {InlineLayout} from "../../layouts/InlineLayout";
 
 
 interface properties {
     label:string;
     repository:Repository<any>;
     consumeChoice:Consumer<DataObject<any>>;
-    isInline:boolean;
     hideIfEmpty:boolean;
     selectedId?:string;
 }
 
-export const ComboBoxFromRepository: FunctionComponent<properties> = ({ label, repository , consumeChoice, isInline, hideIfEmpty, selectedId}) => {
+export const ComboBoxFromRepository: FunctionComponent<properties> = ({ label, repository , consumeChoice, hideIfEmpty, selectedId}) => {
 
     if (hideIfEmpty && repository.dataSet.size === 0) return null;
     if (selectedId) repository.dataSet.setSelectedById(selectedId);
@@ -62,10 +61,5 @@ export const ComboBoxFromRepository: FunctionComponent<properties> = ({ label, r
 
     if (repository.state === FetchingState.FETCHING_DATA) fetchingWidget = <span>загрузка данных</span>;
 
-    return <div className={isInline ? "inline" : ""}>
-        <div className={isInline ? "inline" : "inline-200-px"}>{label}{Symbols.SPACE}️</div>
-        <div className={isInline ? "inline" : "inline-200-px"}>
-            {fetchingWidget || comboBoxWidget}
-        </div>
-    </div>
+    return <InlineLayout widgets={[<>{label}</>, fetchingWidget || comboBoxWidget]} defaultWidth={200}/>
 }

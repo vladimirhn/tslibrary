@@ -20,7 +20,5 @@ export const DataObjectTextAreaInput: FunctionComponent<properties> = ({exampleO
         onChange={(e) => {exampleObjectState.setValue(fieldDescription, e.target.value)}}
     />
 
-    const cleanButton = <button onClick={() => exampleObjectState.setValue(fieldDescription, "")} disabled={value === ""}>X</button>
-
-    return <InlineLayout widgets={[labelWidget, widget, cleanButton]} defaultWidth={200}/>
+    return <InlineLayout widgets={[labelWidget, widget]} defaultWidth={200}/>
 }

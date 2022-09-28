@@ -1,14 +1,19 @@
-import InnerEvents from "../../../../../events/InnerEvents";
-import InnerDispatcher from "../../../../../events/InnerDispatcher";
 import CookiesData from "./CookiesData";
+import BooleanState from "../../../../../data/dataObject/vanila/BooleanState";
 
 export default class AppStateData {
 
     private _user: string | undefined;
     private _expires: number | undefined;
 
+    private _needLoginState?:BooleanState
+
     constructor() {
         this.checkCookie();
+    }
+
+    public set userState(needLoginState:BooleanState) {
+        this._needLoginState = needLoginState;
     }
 
     public get user(): string {
@@ -32,10 +37,7 @@ export default class AppStateData {
         this._user = undefined;
         this._expires = undefined;
 
-        // delete_cookie("login", "/", window.location.hostname);
-        // delete_cookie("expirationTime", "/", window.location.hostname);
-
-        InnerDispatcher.fireEvent(InnerEvents.authRelatedActionPerformed)
+        this._needLoginState?.setValue(true);
     }
 
     public setFetchedResult(login: string, expiration: number): void {
@@ -44,7 +46,8 @@ export default class AppStateData {
         this._expires = expiration;
 
         this.setTokenPayloadCookie(login, expiration);
-        InnerDispatcher.fireEvent(InnerEvents.authRelatedActionPerformed)
+
+        this._needLoginState?.setValue(false);
     };
 
     private checkCookie(): void {

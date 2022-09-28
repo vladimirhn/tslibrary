@@ -10,11 +10,10 @@ import DataObjectState from "../../../../../data/dataObject/DataObjectState";
 interface properties {
     exampleObjectState:DataObjectState;
     fieldDescription:ObjectFieldDescription;
-    isInline:boolean;
     onChoice:Runnable;
 }
 
-export const ComboBoxFromForeign: FunctionComponent<properties> = ({ exampleObjectState, fieldDescription, isInline, onChoice }) => {
+export const ComboBoxFromForeign: FunctionComponent<properties> = ({ exampleObjectState, fieldDescription, onChoice }) => {
 
     const dataObjectClass = (fieldDescription as unknown as Class<any>).foreignModel;
 
@@ -35,7 +34,6 @@ export const ComboBoxFromForeign: FunctionComponent<properties> = ({ exampleObje
         label={fieldDescription.label}
         repository={foreignRepository}
         consumeChoice={processChoice}
-        isInline={isInline}
         hideIfEmpty={false}
     />
 }

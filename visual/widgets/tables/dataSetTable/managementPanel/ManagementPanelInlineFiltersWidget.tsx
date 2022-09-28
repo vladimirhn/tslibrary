@@ -35,7 +35,6 @@ export const ManagementPanelInlineFiltersWidget: FunctionComponent<properties> =
                 key={index}
                 exampleObjectState={exampleObjectState}
                 fieldDescription={filterFieldDescription}
-                isInline={true}
                 onChoice={() => repository.fetchFiltered(exampleObjectState.getDataObject())}
             />;
         }

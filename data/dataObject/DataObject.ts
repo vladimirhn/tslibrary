@@ -14,8 +14,17 @@ export default class DataObject<T> {
         return new DataObject().setUp({}, DataSet.empty());
     }
 
-    public static fromClass(klass:Class<any>): DataObject<any> {
-        return DataObject.fromObject({}, klass);
+    public static fromClass(klass:Class<any>, setUpDefaults = false): DataObject<any> {
+
+        const obj:any = {};
+
+        if (setUpDefaults) {
+            Domain.get(klass).objectDescription().defaultFieldsDescriptions.forEach(desc => {
+                obj[desc.field] = desc.default;
+            })
+        }
+
+        return DataObject.fromObject(obj, klass);
     }
 
     public static fromObject(obj:{}, klass:Class<any>): DataObject<any> {
