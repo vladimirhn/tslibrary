@@ -25,7 +25,7 @@ export const BasicLayoutApplication: FunctionComponent<properties> = ({ pages })
 
 
     const [gotSchema, setGotSchema] = useState<boolean>(DataSchema.gotScheme());
-    if (!appState.needLogin() && !DataSchema.gotScheme()) {
+    if (!needLoginState.getValue() && !DataSchema.gotScheme()) {
         DataSchema.getSchema(setGotSchema);
     }
 
