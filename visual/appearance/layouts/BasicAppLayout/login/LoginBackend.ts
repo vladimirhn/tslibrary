@@ -30,13 +30,7 @@ export default class LoginBackend {
 
     static register = (data:Credentials, callback:LoginResponseProcessor):void => {
 
-        // Fetcher.postForText(data, "/register")
-        //     .then(json => {
-        //         data = JSON.parse(json)
-        //         callback(data.login, data.expiration)
-        //     })
-
-        Fetcher.postForJson(data, "/auth", true)
+        Fetcher.postForJson(data, "/register", true)
             .then(json => {
                 callback(new CookiesData(json.login,json.expiration))
             })
