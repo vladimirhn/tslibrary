@@ -2,7 +2,6 @@ import './app.css';
 
 import React, {FunctionComponent, useEffect, useState} from 'react';
 
-import AppStateData from "../login/AppStateData";
 import {LoginPage} from "../login/LoginPage";
 import {ApplicationPage} from "./ApplicationPage";
 import Page from "../../../../pages/Page";
@@ -16,8 +15,7 @@ interface properties {
 
 export const BasicLayoutApplication: FunctionComponent<properties> = ({ pages }) => {
 
-    const needLoginState:BooleanState = new BooleanState(useState(true));
-    const appState:AppStateData = Context.appStateData;
+    const needLoginState:BooleanState = new BooleanState(useState(Context.appStateData.needLogin()));
 
     useEffect(() => {
         Context.appStateData.userState = needLoginState;
