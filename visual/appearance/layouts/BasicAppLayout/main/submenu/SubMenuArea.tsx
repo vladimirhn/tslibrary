@@ -12,7 +12,7 @@ interface properties {
 
 export const SubMenuArea: FunctionComponent<properties> = ({ currentSubMenuEntries, setCurrentPage, currentPage }) => {
 
-        const entries = currentSubMenuEntries.map((page, index) => {
+        const entries = currentSubMenuEntries.filter(sp => sp.isVisible).map((page, index) => {
 
             return <SubMenuEntry
                 key={index}

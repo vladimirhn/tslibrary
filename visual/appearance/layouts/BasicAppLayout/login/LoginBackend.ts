@@ -51,6 +51,6 @@ export default class LoginBackend {
 
     static logout = () => {
         Fetcher.getText("/u/logout");
-        Context.appStateData.logout();
+        Context.userStateData.logout();
     }
 }

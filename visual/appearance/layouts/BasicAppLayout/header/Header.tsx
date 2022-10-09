@@ -1,19 +1,16 @@
 import React, {FunctionComponent} from 'react';
 import './header.css';
 
-import DropdownMenuButton from "./DropdownMenuButton";
 import {AuthWidget} from "./AuthWidget";
-import Page from "../../../../pages/Page";
+import Pages from "../../../../pages/Pages";
 
 interface properties {
-    pages: Page[];
+    pages: Pages;
 }
 
 export const Header: FunctionComponent<properties> = ({ pages }) => {
 
     return <header className="App-header">
-
-        <DropdownMenuButton menuEntries={pages}/>
         <AuthWidget/>
     </header>
 }

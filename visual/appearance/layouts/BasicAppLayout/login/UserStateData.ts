@@ -1,7 +1,7 @@
 import CookiesData from "./CookiesData";
 import BooleanState from "../../../../../data/dataObject/vanila/BooleanState";
 
-export default class AppStateData {
+export default class UserStateData {
 
     private _user: string | undefined;
     private _expires: number | undefined;

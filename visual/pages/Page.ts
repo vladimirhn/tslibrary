@@ -8,6 +8,7 @@ export default class Page {
      readonly title: string;
      private _widget: JSX.Element | null;
      private readonly _subPages: Array<Page>;
+     public isVisible:boolean = true;
 
      constructor(title: string) {
           this.title = title;
@@ -34,8 +35,8 @@ export default class Page {
      }
 
      get defaultPage(): Page {
-          if (this._subPages.length > 0) {
-               return this._subPages[0];
+          if (this._subPages.filter(sp => sp.isVisible).length > 0) {
+               return this._subPages.filter(sp => sp.isVisible)[0];
           } else {
                return this;
           }

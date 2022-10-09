@@ -4,22 +4,25 @@ import React, {FunctionComponent, useEffect, useState} from 'react';
 
 import {LoginPage} from "../login/LoginPage";
 import {ApplicationPage} from "./ApplicationPage";
-import Page from "../../../../pages/Page";
 import Context from "../../../../../reflection/Context";
 import DataSchema from "../../../../../data/schema/DataSchema";
 import BooleanState from "../../../../../data/dataObject/vanila/BooleanState";
+import PagesState from "../../../../pages/PagesState";
+import Pages from "../../../../pages/Pages";
 
 interface properties {
-    pages: Page[];
+    pages: Pages;
 }
 
 export const BasicLayoutApplication: FunctionComponent<properties> = ({ pages }) => {
 
-    const needLoginState:BooleanState = new BooleanState(useState(Context.appStateData.needLogin()));
+    const needLoginState:BooleanState = new BooleanState(useState(Context.userStateData.needLogin()));
+    const pagesState:PagesState = new PagesState(useState(pages));
 
     useEffect(() => {
-        Context.appStateData.userState = needLoginState;
-    }, [needLoginState])
+        Context.userStateData.userState = needLoginState;
+        Context.pagesState = pagesState;
+    }, [needLoginState, pagesState])
 
 
     const [gotSchema, setGotSchema] = useState<boolean>(DataSchema.gotScheme());
@@ -33,7 +36,7 @@ export const BasicLayoutApplication: FunctionComponent<properties> = ({ pages })
         screen = <LoginPage />;
     } else {
         if (!gotSchema) screen = <>Загрузка настроек...</>;
-        else screen = <ApplicationPage pages={pages} />
+        else screen = <ApplicationPage pages={pagesState.getValue()} />
     }
 
     return (screen)

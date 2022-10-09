@@ -33,7 +33,7 @@ export const RegisterWidget: FunctionComponent = () => {
 
     const processResponse:LoginResponseProcessor = (cookiesData: CookiesData) => {
         if (login) {
-            Context.appStateData.setFetchedResult(login, cookiesData.expiration || 0);
+            Context.userStateData.setFetchedResult(login, cookiesData.expiration || 0);
         } else {
             alert("Неверное имя пользователя или пароль.")
         }

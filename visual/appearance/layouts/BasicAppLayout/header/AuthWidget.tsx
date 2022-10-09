@@ -10,7 +10,7 @@ export const AuthWidget: FunctionComponent = () => {
         LoginBackend.logout();
     }
 
-    const userName:string = Context.appStateData.user ? Context.appStateData.user : "anonymous";
+    const userName:string = Context.userStateData.user ? Context.userStateData.user : "anonymous";
 
     return <div className="auth-widget">
         <button onClick={logout}>Выйти ({userName})</button>

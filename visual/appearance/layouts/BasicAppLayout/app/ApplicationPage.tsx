@@ -3,15 +3,16 @@ import {Header} from "../header/Header";
 import {Aside} from "../aside/Aside";
 import {Main} from "../main/Main";
 import Page from "../../../../pages/Page";
+import Pages from "../../../../pages/Pages";
 
 interface properties {
-    pages: Page[];
+    pages: Pages;
 }
 
 export const ApplicationPage: FunctionComponent<properties> = ({ pages }) => {
 
-    const [currentSubMenuEntries, setCurrentSubMenuEntries] = useState<Page[]>(pages[0].subPages)
-    const [currentPage, setCurrentPage] = useState<Page>(pages[0].defaultPage)
+    const [currentSubMenuEntries, setCurrentSubMenuEntries] = useState<Page[]>(pages.getPagesList()[0].subPages.filter(sp => sp.isVisible))
+    const [currentPage, setCurrentPage] = useState<Page>(pages.getPagesList()[0].defaultPage)
 
 
     const processMainMenuChoice = (page: Page):void => {
